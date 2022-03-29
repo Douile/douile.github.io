@@ -5,6 +5,7 @@
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
+const { execSync } = require("child_process");
 
 const html_minify = require("html-minifier").minify;
 const css_minify = new (require("clean-css"))({ level: 2 });
@@ -133,14 +134,9 @@ function saveIntegrity(file) {
 
 copyDir(SRC_DIR, BUILD_DIR);
 
-console.log("Adding script integrities");
+const version = execSync("git log -n 1 --format=\"%h\"").toString().trim();
 
-let version = NaN;
-if (fs.existsSync(".version"))
-  version = parseInt(fs.readFileSync(".version", { encoding: "utf8" })) + 1;
-
-if (isNaN(version)) version = 1;
-version = version % 100;
+console.log(`Adding script integrities (${version})`);
 
 const sitemap = [];
 for (let file of htmlFiles) {
@@ -198,4 +194,3 @@ fs.writeFileSync(
     `</urlset>`
 );
 
-fs.writeFileSync(".version", version.toString());
