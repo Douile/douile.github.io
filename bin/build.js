@@ -10,13 +10,15 @@ const html_minify = require("html-minifier").minify;
 const css_minify = new (require("clean-css"))({ level: 2 });
 const js_minify = require("uglify-js").minify;
 const svg_minify = require("svgo").optimize;
+const json_minify = require("jsonminify");
 
 const html_parser = require("node-html-parser").parse;
 
-const SRC_DIR = path.join(__dirname, "src");
-const BUILD_DIR = path.join(__dirname, "build");
+const SRC_DIR = path.join(__dirname, "../src");
+const BUILD_DIR = path.join(__dirname, "../build");
 
-const APP_PAGES = ["/", "/projects", "/activity", "/contact"];
+const DOMAIN = "https://douile.com";
+const APP_PAGES = ["/", "/projects/", "/activity/", "/contact/"];
 
 const htmlFiles = [];
 const fileIntegrity = new Map();
@@ -102,6 +104,10 @@ function copyFile(src, dest, ent) {
       );
       break;
     }
+    case "json": {
+      fs.writeFileSync(dest, json_minify(fs.readFileSync(src, { encoding: "utf8" })));
+      break;
+    }
     default: {
       fs.copyFileSync(src, dest);
       break;
@@ -133,6 +139,7 @@ if (fs.existsSync(".version"))
 if (isNaN(version)) version = 1;
 version = version % 100;
 
+const sitemap = [];
 for (let file of htmlFiles) {
   console.log(file);
   const html = html_parser(fs.readFileSync(file, { encoding: "utf8" }));
@@ -155,17 +162,24 @@ for (let file of htmlFiles) {
     const body = html.querySelector("body");
     for (let page of APP_PAGES) {
       body.setAttribute("data-page", page);
+      let prio = 1;
       if (page === "/") {
         fs.writeFileSync(path.join(dir, "index.html"), html.toString());
       } else {
         const pagePath = path.join(dir, page.substring(1));
         fs.mkdirSync(pagePath, { recursive: true });
         fs.writeFileSync(path.join(pagePath, "index.html"), html.toString());
+        prio = 0.8;
       }
+      sitemap.push({ loc: DOMAIN+page, priority: prio });
     }
   } else {
     fs.writeFileSync(file, html.toString());
+    sitemap.push({ loc: DOMAIN+"/"+path.relative(BUILD_DIR, file), priority: 0.5 });
   }
 }
+
+const now = new Date().toISOString();
+fs.writeFileSync(path.join(BUILD_DIR, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">` + sitemap.map(p => `<url><loc>${p.loc}</loc><lastmod>${now}</lastmod><priority>${p.priority}</priority></url>`).join('') + `</urlset>`);
 
 fs.writeFileSync(".version", version.toString());
