@@ -155,13 +155,13 @@ for (let file of htmlFiles) {
     const body = html.querySelector("body");
     for (let page of APP_PAGES) {
       body.setAttribute("data-page", page);
-      fs.writeFileSync(
-        path.join(
-          dir,
-          page === "/" ? "index.html" : `index_${page.substring(1)}.html`
-        ),
-        html.toString()
-      );
+      if (page === "/") {
+        fs.writeFileSync(path.join(dir, "index.html"), html.toString());
+      } else {
+        const pagePath = path.join(dir, page.substring(1));
+        fs.mkdirSync(pagePath, { recursive: true });
+        fs.writeFileSync(path.join(pagePath, "index.html"), html.toString());
+      }
     }
   } else {
     fs.writeFileSync(file, html.toString());
