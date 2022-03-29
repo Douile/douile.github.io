@@ -39,9 +39,9 @@ a.page-link:hover {
 }
 
 body[data-page="/"] a.page-link[href="/"],
-body[data-page="/projects"] a.page-link[href="/projects"],
-body[data-page="/activity"] a.page-link[href="/activity"],
-body[data-page="/contact"] a.page-link[href="/contact"] {
+body[data-page="/projects/"] a.page-link[href="/projects/"],
+body[data-page="/activity/"] a.page-link[href="/activity/"],
+body[data-page="/contact/"] a.page-link[href="/contact/"] {
   border-top: 2px solid var(--foreground);
 }
 
@@ -85,9 +85,9 @@ body[data-page="/contact"] a.page-link[href="/contact"] {
 }
 
 body[data-page="/"] .page-home,
-body[data-page="/projects"] .page-projects,
-body[data-page="/activity"] .page-activity,
-body[data-page="/contact"] .page-contact {
+body[data-page="/projects/"] .page-projects,
+body[data-page="/activity/"] .page-activity,
+body[data-page="/contact/"] .page-contact {
   opacity: 1;
   z-index: 1;
   pointer-events: all;

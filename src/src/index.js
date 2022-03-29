@@ -455,20 +455,20 @@
     },
     PAGES: {
       "/": null,
-      "/projects": (url) => {
+      "/projects/": (url) => {
         let filters = [];
         if (url !== undefined && url.hash.length > 1) {
           filters.push(url.hash.substring(1));
         }
         projectFilterUpdate(filters);
       },
-      "/activity": async () => {
+      "/activity/": async () => {
         const page = document.querySelector(".page-activity");
         if (page.childElementCount > 1) return;
 
         loadActivityPage().then(null, console.error);
       },
-      "/contact": null,
+      "/contact/": null,
     },
   });
 
