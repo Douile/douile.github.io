@@ -1,5 +1,15 @@
 [
   {
+    "name": "rust-build",
+    "description": "Github action for building and archiving rust projects.",
+    "images": [],
+    "links": {
+      "github": "https://github.com/rust-build/rust-build.action",
+      "marketplace": "https://github.com/marketplace/actions/rust-release-binary"
+    },
+    "tags": ["rust","ci","shell","docker"]
+  },
+  {
     "name": "NewPipe",
     "description": "I added some bug fixes and feature improvements to NewPipe: an open-source mobile app for streaming online video.",
     "images": [],
@@ -42,8 +52,8 @@
     "name": "this-website",
     "description": "This website is written using HTML5, pure JS and pure CSS3.",
     "images": [],
-    "links": { "site": "https://douile.com/" },
-    "tags": ["html5", "javascript"]
+    "links": { "site": "https://douile.com/", "github": "https://github.com/Douile/douile.github.io" },
+    "tags": ["html5", "javascript","ci"]
   },
   {
     "name": "discord-suggestion",
