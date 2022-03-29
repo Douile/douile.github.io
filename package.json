@@ -2,7 +2,8 @@
   "name": "douile.com",
   "version": "1.0.0",
   "scripts": {
-    "test": "npm run test:format",
+    "test": "node bin/run-tests.js",
+    "test:lint": "npx eslint src bin",
     "test:format": "npx prettier --check ./bin ./src",
     "build": "node bin/build.js",
     "format": "npx prettier --write ./bin ./src"
@@ -24,6 +25,9 @@
     "node-html-parser": "^5.3",
     "prettier": "^2.6",
     "svgo": "^2.8",
-    "uglify-js": "^3.15"
+    "uglify-js": "^3.15",
+    "eslint": "^8.9",
+    "eslint-config-airbnb-base": "^15.0",
+    "eslint-config-prettier": "^8.4"
   }
 }
