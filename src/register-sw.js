@@ -1,0 +1,1 @@
+"use strict";"serviceWorker"in navigator?window.addEventListener("load",async function(){navigator.serviceWorker.register("/sw.js").then(function(r){console.log("Service worker registration success",r)}).catch(function(){return console.error.apply(this,["Service worker registration failed"].concat(Array.from(arguments)))})}):console.log("Service worker not supported");
