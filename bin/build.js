@@ -20,6 +20,7 @@ const BUILD_DIR = path.join(__dirname, "../build");
 
 const DOMAIN = "https://douile.com";
 const APP_PAGES = ["/", "/projects/", "/activity/", "/contact/"];
+const MEDIA_URL = "https://media.githubusercontent.com/media/Douile/douile.github.io/gh-pages";
 
 const htmlFiles = [];
 const fileIntegrity = new Map();
@@ -106,9 +107,21 @@ function copyFile(src, dest, ent) {
       break;
     }
     case "json": {
+      let fileContent = JSON.parse(fs.readFileSync(src, { encoding: "utf8" }));
+      if (ent.name === "projects.json") {
+        const o = fileContent;
+        for (let i=0;i<o.length;i++) {
+          for (let j=0;j<o[i].images.length;j++) {
+            if (o[i].images[j].startsWith("/")) {
+              o[i].images[j] = MEDIA_URL + o[i].images[j];
+            }
+          }
+        }
+        fileContent = o;
+      }
       fs.writeFileSync(
         dest,
-        json_minify(fs.readFileSync(src, { encoding: "utf8" }))
+        JSON.stringify(fileContent),
       );
       break;
     }
