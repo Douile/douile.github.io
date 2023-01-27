@@ -20,7 +20,8 @@ const BUILD_DIR = path.join(__dirname, "../build");
 
 const DOMAIN = "https://douile.com";
 const APP_PAGES = ["/", "/projects/", "/activity/", "/contact/"];
-const MEDIA_URL = "https://media.githubusercontent.com/media/Douile/douile.github.io/gh-pages";
+const MEDIA_URL =
+  "https://media.githubusercontent.com/media/Douile/douile.github.io/gh-pages";
 
 const htmlFiles = [];
 const fileIntegrity = new Map();
@@ -110,8 +111,8 @@ function copyFile(src, dest, ent) {
       let fileContent = JSON.parse(fs.readFileSync(src, { encoding: "utf8" }));
       if (ent.name === "projects.json") {
         const o = fileContent;
-        for (let i=0;i<o.length;i++) {
-          for (let j=0;j<o[i].images.length;j++) {
+        for (let i = 0; i < o.length; i++) {
+          for (let j = 0; j < o[i].images.length; j++) {
             if (o[i].images[j].startsWith("/")) {
               o[i].images[j] = MEDIA_URL + o[i].images[j];
             }
@@ -119,10 +120,7 @@ function copyFile(src, dest, ent) {
         }
         fileContent = o;
       }
-      fs.writeFileSync(
-        dest,
-        JSON.stringify(fileContent),
-      );
+      fs.writeFileSync(dest, JSON.stringify(fileContent));
       break;
     }
     default: {
@@ -147,7 +145,7 @@ function saveIntegrity(file) {
 
 copyDir(SRC_DIR, BUILD_DIR);
 
-const version = execSync("git log -n 1 --format=\"%h\"").toString().trim();
+const version = execSync('git log -n 1 --format="%h"').toString().trim();
 
 console.log(`Adding script integrities (${version})`);
 
@@ -206,4 +204,3 @@ fs.writeFileSync(
       .join("") +
     `</urlset>`
 );
-
