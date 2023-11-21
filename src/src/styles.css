@@ -318,7 +318,7 @@ body[data-page="/contact/"] .page-contact {
 }
 
 .page-contact .form-response {
-  grid-area: 4 / 1 / 4 / 3;
+  grid-area: 5 / 1 / 5 / 3;
 }
 
 input,
