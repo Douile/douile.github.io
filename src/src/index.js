@@ -382,123 +382,6 @@
     },
   });
 
-  const _GA = Object.defineProperties(
-    {},
-    {
-      TRACKING_ID: {
-        configurable: false,
-        writable: false,
-        value: "UA-98384710-12",
-      },
-      TRACKING_SCRIPT: {
-        configurable: false,
-        get: function () {
-          return `https://www.googletagmanager.com/gtag/js?id=${_GA.TRACKING_ID}`;
-        },
-      },
-      TRACKING_CONSENT_KEY: {
-        configurable: false,
-        writable: false,
-        value: "_GA_CONSENT",
-      },
-    }
-  );
-
-  function checkGoogleAnalytics() {
-    return new Promise((resolve) => {
-      fetch(_GA.TRACKING_SCRIPT, { method: "HEAD", mode: "no-cors" })
-        .then(() => {
-          resolve(true);
-        })
-        .catch(() => {
-          resolve(false);
-        });
-    });
-  }
-
-  function checkGoogleAnalyticsConsent() {
-    return new Promise((resolve) => {
-      try {
-        if (localStorage) {
-          const consent = localStorage.getItem(_GA.TRACKING_CONSENT_KEY);
-          if (consent === "true") {
-            return resolve(true);
-          } else if (consent !== null) {
-            return resolve(false);
-          }
-        }
-        console.log("Showing GA consent dialog");
-        /* Show consent dialog */
-        const dialog = createElement("dialog", { class: "dialog" });
-        dialog.appendChild(
-          createElement(
-            "p",
-            { class: "dialog-text" },
-            "Would you like to load Google Analytics?"
-          )
-        );
-        const accept = createElement(
-          "button",
-          { class: "dialog-button dialog-accept" },
-          "Yes"
-        );
-        const decline = createElement(
-          "button",
-          { class: "dialog-button dialog-decline" },
-          "No"
-        );
-
-        accept.addEventListener(
-          "click",
-          () => {
-            localStorage.setItem(_GA.TRACKING_CONSENT_KEY, "true");
-            dialog.remove();
-            resolve(true);
-          },
-          { once: true }
-        );
-        decline.addEventListener(
-          "click",
-          () => {
-            localStorage.setItem(_GA.TRACKING_CONSENT_KEY, "false");
-            dialog.remove();
-            resolve(false);
-          },
-          { once: true }
-        );
-
-        dialog.appendChild(accept);
-        dialog.appendChild(decline);
-        document.body.appendChild(dialog);
-      } catch (e) {
-        console.error(e);
-      }
-    });
-  }
-
-  async function loadGoogleAnalytics() {
-    console.log(`Attempting to load google analytics for ${_GA.TRACKING_ID}`);
-    if (await checkGoogleAnalytics()) {
-      /* Check for user consent */
-      if (!(await checkGoogleAnalyticsConsent())) return;
-      /* Load google analytics */
-      const script = createElement("script", {
-        async: "",
-        src: _GA.TRACKING_SCRIPT,
-      });
-      document.head.appendChild(script);
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", _GA.TRACKING_ID);
-      console.log("Loaded google analytics");
-    } else {
-      console.log("User-Agent blocks google analytics");
-    }
-  }
-
   window.addEventListener(
     "click",
     function (e) {
@@ -546,7 +429,6 @@
     function () {
       window.displayPage(window.location.pathname, window.location);
       initBackground(document.querySelector("canvas#dynamic-background"));
-      loadGoogleAnalytics().then(null, console.error);
     },
     { once: true }
   );
@@ -740,7 +622,7 @@
       keyLog.length === keyCheck.length &&
       keyLog.reduce((a, v, i) => a && keyCheck[i] === v, true)
     )
-      window.location = "https://ctf.cybersoc.cf/users/10";
+      window.location = "https://cybersocuol.github.io";
   });
 
   document.querySelector(".page-activity").addEventListener(
