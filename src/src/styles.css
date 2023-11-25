@@ -624,8 +624,8 @@ html {
 
 html[data-style="light"],
 html[data-style="light"] * {
-  --foreground: #1a1f1c;
-  --background: #ffffff;
+  --foreground: #3a3f3c;
+  --background: #eee;
   --filter-foreground: invert(0%);
   --filter-background: invert(100%);
   --highlight: #1a1f1c3f;
