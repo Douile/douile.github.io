@@ -2,11 +2,13 @@
 
 // Build site
 
-const crypto = require("crypto");
-const fs = require("fs");
-const path = require("path");
-const { execSync } = require("child_process");
+// Node requirements
+const crypto = require("node:crypto");
+const fs = require("node:fs");
+const path = require("node:path");
+const { execSync } = require("node:child_process");
 
+// External requirements
 const html_minify = require("html-minifier").minify;
 const css_minify = new (require("clean-css"))({ level: 2 });
 const js_minify = require("uglify-js").minify;
