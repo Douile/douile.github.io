@@ -79,7 +79,9 @@ function renderProject(project) {
       "aria-label": type,
       rel: "noopener",
     });
-    link.project = project;
+    if (type === "images") {
+      link.setAttribute("data-images", JSON.stringify(project.images));
+    }
     link.appendChild(
       createElement("div", { class: "link-icon", "data-link": type })
     );

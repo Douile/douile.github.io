@@ -208,34 +208,33 @@
       const pageName = splitPath[splitPath.length - 1].trim();
       document.title = `Douile${pageName.length > 0 ? ` | ${pageName}` : ""}`;
     },
-    displayImages: function (project) {
-      console.log(project.images);
+    displayImages: function (images) {
+      console.log(images);
       const gallery = document.querySelector(".gallery");
       gallery.setAttribute("data-selected", 0);
-      if (project.images.length < 2)
-        gallery.setAttribute("data-single", "true");
-      for (let i = 0; i < project.images.length; i++) {
+      if (images.length < 2) gallery.setAttribute("data-single", "true");
+      for (let i = 0; i < images.length; i++) {
         const container = createElement("div", {
           class: "gallery-image-container",
         });
         container.appendChild(
           createElement("img", {
             class: "gallery-image",
-            src: project.images[i],
+            src: images[i],
             "data-index": i,
           })
         );
         gallery.appendChild(container);
         if (
           document.head.querySelector(
-            `link[rel="preload"][as="image"][href="${project.images[i]}"]`
+            `link[rel="preload"][as="image"][href="${images[i]}"]`
           ) === null
         ) {
           document.head.appendChild(
             createElement("link", {
               rel: "preload",
               as: "image",
-              href: project.images[i],
+              href: images[i],
             })
           );
         }
@@ -602,7 +601,7 @@
         e.preventDefault();
         switch (dest.hash) {
           case "#images":
-            window.displayImages(e.target.project);
+            window.displayImages(JSON.parse(e.target.dataset.images));
             break;
           default:
             window.displayPage(dest.pathname, dest);
