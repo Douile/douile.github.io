@@ -16,6 +16,8 @@ import { optimize as svg_minify } from "svgo";
 
 import { parse as html_parser } from "node-html-parser";
 
+import YAML from "yaml";
+
 const css_minify = new clean_css({ level: 2 });
 
 // Internal requirements
@@ -61,8 +63,6 @@ const htmlFiles = [];
  * @type {{loc: string, priority: number}[]}
  */
 const sitemap = [];
-
-let renderedProjects = null;
 
 // STAGE 0: Checks
 if (!fs.existsSync(SRC_DIR)) {
@@ -160,19 +160,7 @@ function copyFile(src, dest, ent) {
     }
     case "json": {
       let fileContent = JSON.parse(fs.readFileSync(src, { encoding: "utf8" }));
-      if (ent.name === "projects.json") {
-        const o = fileContent;
-        for (let i = 0; i < o.length; i++) {
-          for (let j = 0; j < o[i].images.length; j++) {
-            if (o[i].images[j].startsWith("/")) {
-              o[i].images[j] = MEDIA_URL + o[i].images[j];
-            }
-          }
-        }
-        renderedProjects = renderProjects(o);
-      } else {
-        fs.writeFileSync(dest, JSON.stringify(fileContent));
-      }
+      fs.writeFileSync(dest, JSON.stringify(fileContent));
       break;
     }
     default: {
@@ -184,9 +172,26 @@ function copyFile(src, dest, ent) {
 
 copyDir(SRC_DIR, BUILD_DIR);
 
-// STAGE 2: HTML internal changes
+// STAGE 2: Render HTML
 console.log(`Rendering HTML (${version})`);
 
+// Render projects
+const renderedProjects = renderProjects(
+  YAML.parse(
+    fs.readFileSync(path.join(__dirname, "../projects.yaml"), {
+      encoding: "utf8",
+    })
+  ).map((project) => {
+    for (let i = 0; i < project.images.length; i++) {
+      if (project.images[i].startsWith("/")) {
+        project.images[i] = MEDIA_URL + project.images[i];
+      }
+    }
+    return project;
+  })
+);
+
+// Render static HTML
 for (let file of htmlFiles) {
   console.log(file);
   const html = html_parser(fs.readFileSync(file, { encoding: "utf8" }));
@@ -249,6 +254,8 @@ for (let file of htmlFiles) {
 }
 
 // STAGE 3: Generate sitemap
+console.log(`Generating sitemap...`);
+
 const now = new Date().toISOString();
 fs.writeFileSync(
   path.join(BUILD_DIR, "sitemap.xml"),
