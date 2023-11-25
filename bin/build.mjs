@@ -125,7 +125,7 @@ function copyFile(src, dest, ent) {
           removeComments: true,
           removeRedundantAttributes: true,
           useShortDoctype: true,
-        })
+        }),
       );
       htmlFiles.push(dest);
       break;
@@ -133,7 +133,7 @@ function copyFile(src, dest, ent) {
     case "css": {
       fs.writeFileSync(
         dest,
-        css_minify.minify(fs.readFileSync(src, { encoding: "utf8" })).styles
+        css_minify.minify(fs.readFileSync(src, { encoding: "utf8" })).styles,
       );
       calculateAndSaveIntegrity(BUILD_DIR, dest);
       break;
@@ -144,7 +144,7 @@ function copyFile(src, dest, ent) {
         js_minify(fs.readFileSync(src, { encoding: "utf8" }), {
           v8: true,
           webkit: true,
-        }).code
+        }).code,
       );
       calculateAndSaveIntegrity(BUILD_DIR, dest);
       break;
@@ -154,7 +154,7 @@ function copyFile(src, dest, ent) {
         dest,
         svg_minify(fs.readFileSync(src, { encoding: "utf8" }), {
           multipass: true,
-        }).data
+        }).data,
       );
       break;
     }
@@ -180,7 +180,7 @@ const renderedProjects = renderProjects(
   YAML.parse(
     fs.readFileSync(path.join(__dirname, "../projects.yaml"), {
       encoding: "utf8",
-    })
+    }),
   ).map((project) => {
     for (let i = 0; i < project.images.length; i++) {
       if (project.images[i].startsWith("/")) {
@@ -188,7 +188,7 @@ const renderedProjects = renderProjects(
       }
     }
     return project;
-  })
+  }),
 );
 
 // Render static HTML
@@ -263,8 +263,8 @@ fs.writeFileSync(
     sitemap
       .map(
         (p) =>
-          `<url><loc>${p.loc}</loc><lastmod>${now}</lastmod><priority>${p.priority}</priority></url>`
+          `<url><loc>${p.loc}</loc><lastmod>${now}</lastmod><priority>${p.priority}</priority></url>`,
       )
       .join("") +
-    `</urlset>`
+    `</urlset>`,
 );

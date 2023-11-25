@@ -135,12 +135,12 @@
             class: "gallery-image",
             src: images[i],
             "data-index": i,
-          })
+          }),
         );
         gallery.appendChild(container);
         if (
           document.head.querySelector(
-            `link[rel="preload"][as="image"][href="${images[i]}"]`
+            `link[rel="preload"][as="image"][href="${images[i]}"]`,
           ) === null
         ) {
           document.head.appendChild(
@@ -148,7 +148,7 @@
               rel: "preload",
               as: "image",
               href: images[i],
-            })
+            }),
           );
         }
       }
@@ -170,7 +170,7 @@
       let selected = last + inc;
 
       const children = Array.from(
-        gallery.querySelectorAll("img.gallery-image")
+        gallery.querySelectorAll("img.gallery-image"),
       );
       while (selected >= children.length) selected -= children.length;
       while (selected < 0) selected += children.length;
@@ -205,7 +205,7 @@
         document.documentElement.getAttribute("data-style") === "light";
       document.documentElement.setAttribute(
         "data-style",
-        isLight ? "dark" : "light"
+        isLight ? "dark" : "light",
       );
       const canvas = document.querySelector("canvas#dynamic-background");
       canvas.dataColor =
@@ -253,7 +253,7 @@
           project.classList.remove("project-shown");
         }
         for (let project of document.querySelectorAll(
-          filters.map((f) => `.project__${f}`).join(",")
+          filters.map((f) => `.project__${f}`).join(","),
         )) {
           project.classList.add("project-shown");
         }
@@ -265,7 +265,7 @@
       }
 
       let filterStyle = document.querySelector(
-        "link[data-role=category-filter]"
+        "link[data-role=category-filter]",
       );
       if (filterStyle === null) {
         filterStyle = createElement("link", {
@@ -279,7 +279,7 @@
         filters.map((f) => {
           return `.project-tag__${f}{border:1px solid var(--color)}`;
         }),
-        { type: "text/css" }
+        { type: "text/css" },
       );
       filterStyle.href = URL.createObjectURL(blob);
     },
@@ -292,8 +292,8 @@
       const currentPage = parseInt(page.getAttribute("data-api-page")) || 1;
       const res = await fetch(
         `https://api.github.com/users/Douile/events?page=${encodeURIComponent(
-          currentPage
-        )}`
+          currentPage,
+        )}`,
       );
       if (res.status === 422) return; // Don't request anymore as github will never return anything
 
@@ -359,7 +359,7 @@
                 break;
             }
             return c;
-          })
+          }),
         );
         page.setAttribute("data-api-page", currentPage + 1);
       }
@@ -423,7 +423,7 @@
         }
       }
     },
-    { capture: true, passive: false }
+    { capture: true, passive: false },
   );
 
   window.addEventListener(
@@ -432,7 +432,7 @@
       window.displayPage(window.location.pathname, window.location);
       initBackground(document.querySelector("canvas#dynamic-background"));
     },
-    { once: true }
+    { once: true },
   );
 
   window.addEventListener("resize", function () {
@@ -480,9 +480,9 @@
           const percent = Math.max(
             Math.min(
               (dragEvent.move / (Math.abs(d) - dragEvent.min)) * 100,
-              100
+              100,
             ),
-            0
+            0,
           );
           if (d < 0 && dragEvent.right && dragEvent.goingRight) {
             dragEvent.goingLeft = false;
@@ -634,6 +634,6 @@
         loadActivityPage().then(null, console.error);
       }
     },
-    { passive: true }
+    { passive: true },
   );
 })();

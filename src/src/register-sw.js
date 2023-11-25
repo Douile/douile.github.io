@@ -11,7 +11,9 @@
         .catch(function () {
           return console.error.apply(
             this,
-            ["Service worker registration failed"].concat(Array.from(arguments))
+            ["Service worker registration failed"].concat(
+              Array.from(arguments),
+            ),
           );
         });
     });

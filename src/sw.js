@@ -22,7 +22,7 @@ self.addEventListener("install", (e) => {
           "/assets/symbol-light.svg",
         ])
         .then(() => self.skipWaiting());
-    })
+    }),
   );
 });
 
@@ -37,6 +37,6 @@ self.addEventListener("fetch", (event) => {
       .then((cache) => cache.match(event.request, { ignoreSearch: true }))
       .then((response) => {
         return response || fetch(event.request);
-      })
+      }),
   );
 });

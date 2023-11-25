@@ -37,6 +37,6 @@ export function calculateIntegrity(content) {
 export function calculateAndSaveIntegrity(build_dir, file) {
   fileIntegrities.set(
     relativePath(build_dir, file),
-    calculateIntegrity(readFileSync(file))
+    calculateIntegrity(readFileSync(file)),
   );
 }

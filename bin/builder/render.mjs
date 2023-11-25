@@ -48,10 +48,10 @@ function renderProject(project) {
     class: "project project-shown",
   });
   container.appendChild(
-    createElement("h1", { class: "project-title" }, project.name)
+    createElement("h1", { class: "project-title" }, project.name),
   );
   const tags = container.appendChild(
-    createElement("div", { class: "project-tags" })
+    createElement("div", { class: "project-tags" }),
   );
   for (let tag of project.tags) {
     container.classList.add(`project__${tag}`);
@@ -59,12 +59,12 @@ function renderProject(project) {
       createElement(
         "button",
         { class: `project-tag project-tag__${tag}`, "data-tag": tag },
-        tag
-      )
+        tag,
+      ),
     );
   }
   container.appendChild(
-    createElement("p", { class: "project-description" }, project.description)
+    createElement("p", { class: "project-description" }, project.description),
   );
   const links = createElement("div", { class: "project-links" });
   if (project.images.length > 0) {
@@ -83,7 +83,7 @@ function renderProject(project) {
       link.setAttribute("data-images", JSON.stringify(project.images));
     }
     link.appendChild(
-      createElement("div", { class: "link-icon", "data-link": type })
+      createElement("div", { class: "link-icon", "data-link": type }),
     );
     links.appendChild(link);
   }
