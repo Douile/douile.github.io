@@ -1,6 +1,8 @@
 "use strict";
 
 (function () {
+  document.documentElement.dataset.js = true;
+
   function defineConsts(object, values) {
     for (let key in values) {
       const value = values[key];

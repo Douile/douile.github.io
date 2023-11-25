@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+h1 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /*******************************************************************************
 *** Header
 *******************************************************************************/
@@ -181,11 +186,6 @@ body[data-page="/contact/"] .page-contact {
   opacity: 1;
   position: relative;
   animation: show-project 0.5s linear 0s 1 normal forwards;
-}
-
-.project-title {
-  font-size: 18px;
-  font-weight: bold;
 }
 
 .project-tag {
@@ -571,6 +571,14 @@ button {
 noscript {
   font-weight: bold;
   color: #ff0000;
+}
+
+.js-only {
+  visibility: hidden;
+}
+
+[data-js] .js-only {
+  visibility: visible;
 }
 
 html[data-style="light"] .light-mode-button {
