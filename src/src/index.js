@@ -250,7 +250,7 @@
           project.classList.remove("project-shown");
         }
         for (const project of document.querySelectorAll(
-          filters.map((f) => `.project__${f}`).join(","),
+          filters.map((f) => `.project__${f}`).join(""),
         )) {
           project.classList.add("project-shown");
         }
