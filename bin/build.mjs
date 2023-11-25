@@ -3,7 +3,6 @@
 // Build site
 
 // Node requirements
-import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { execSync } from "node:child_process";
@@ -22,8 +21,10 @@ const css_minify = new clean_css({ level: 2 });
 // Internal requirements
 import {
   calculateAndSaveIntegrity,
+  calculateIntegrity,
   fileIntegrities,
 } from "./builder/utils.mjs";
+import { renderProjects } from "./builder/render.mjs";
 
 // Constants
 
@@ -60,6 +61,8 @@ const htmlFiles = [];
  * @type {{loc: string, priority: number}[]}
  */
 const sitemap = [];
+
+let renderedProjects = null;
 
 // STAGE 0: Checks
 if (!fs.existsSync(SRC_DIR)) {
@@ -166,9 +169,10 @@ function copyFile(src, dest, ent) {
             }
           }
         }
-        fileContent = o;
+        renderedProjects = renderProjects(o);
+      } else {
+        fs.writeFileSync(dest, JSON.stringify(fileContent));
       }
-      fs.writeFileSync(dest, JSON.stringify(fileContent));
       break;
     }
     default: {
@@ -203,8 +207,23 @@ for (let file of htmlFiles) {
     }
   }
 
-  // Generate "app" pages
+  // Index specific rendering
   if (path.basename(file) === "index.html") {
+    // Add pre-rendered projects
+    const projectsRoot = html.querySelector(".projects");
+
+    if (!renderedProjects) {
+      throw new Error("Projects were not rendered");
+    }
+    projectsRoot.firstChild.replaceWith(...renderedProjects.html);
+
+    const css = css_minify.minify(renderedProjects.css).styles;
+    fs.writeFileSync(path.join(BUILD_DIR, "src/projects.css"), css);
+    const cssElem = renderedProjects.cssElem;
+    cssElem.setAttribute("integrity", calculateIntegrity(css));
+    html.querySelector("head").appendChild(cssElem);
+
+    // Generate "app" pages
     const dir = path.dirname(file);
     const body = html.querySelector("body");
     for (let page of APP_PAGES) {

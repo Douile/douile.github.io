@@ -19,15 +19,24 @@ export function relativePath(base, file) {
 }
 
 /**
+ * Calculate integrity
+ * @param {crypto.BinaryLike} content
+ * @returns {string}
+ */
+export function calculateIntegrity(content) {
+  const hash = crypto.createHash("sha512");
+  hash.update(content);
+  return "sha512-" + hash.digest("base64");
+}
+
+/**
  * Read a file and store its integrity in {@link fileIntegrity}
  * @param {string} build_dir Path to the build directory
  * @param {string} file Path to the file being hashed
  */
 export function calculateAndSaveIntegrity(build_dir, file) {
-  const hash = crypto.createHash("sha512");
-  hash.update(readFileSync(file));
   fileIntegrities.set(
     relativePath(build_dir, file),
-    "sha512-" + hash.digest("base64")
+    calculateIntegrity(readFileSync(file))
   );
 }
