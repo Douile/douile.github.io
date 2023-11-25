@@ -247,6 +247,7 @@
     projectFilterUpdate: function (filters) {
       const page = document.querySelector(".projects");
       if (filters.length > 0) {
+        document.documentElement.dataset.animateProjects = true;
         page.setAttribute("data-filter", filters.join(" "));
         // clear old filter
         for (let project of document.querySelectorAll(".project")) {
@@ -258,6 +259,9 @@
           project.classList.add("project-shown");
         }
       } else {
+        if (page.hasAttribute("data-filter")) {
+          document.documentElement.dataset.animateProjects = true;
+        }
         page.removeAttribute("data-filter");
         for (let project of document.querySelectorAll(".project")) {
           project.classList.add("project-shown");

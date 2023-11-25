@@ -180,6 +180,9 @@ body[data-page="/contact/"] .page-contact {
   transform: scale(0, 0);
   opacity: 0;
   position: absolute;
+}
+
+[data-animate-projects] .project {
   animation: hide-project 0.5s linear 0s 1 normal forwards;
 }
 
@@ -187,6 +190,9 @@ body[data-page="/contact/"] .page-contact {
   transform: scale(1, 1);
   opacity: 1;
   position: relative;
+}
+
+[data-animate-projects] .project-shown {
   animation: show-project 0.5s linear 0s 1 normal forwards;
 }
 
