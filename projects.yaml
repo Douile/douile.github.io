@@ -84,7 +84,10 @@
     - javascript
 
 - name: this-website
-  description: This website is written using HTML5, pure JS and pure CSS3.
+  description:
+    This website is written using HTML5, pure JS and pure CSS3. It uses a custom
+    written static-site generator to minify and add integerity to assets as well
+    as pre-render the projects page.
   images: []
   links:
     site: https://douile.com/
