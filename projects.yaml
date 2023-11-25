@@ -11,6 +11,17 @@
   links:
     github: https://github.com/gamedig
 
+- name: coredns-iface
+  description: A plugin for coredns, an open-source DNS server written in go, that
+    responds with the IP addresses of local network interfaces. e.g. eth0.iface ->
+    192.168.0.5
+  tags:
+    - go
+    - dns
+  images: []
+  links:
+    github: https://github.com/Douile/coredns-iface
+
 - name: rust-build
   description: Github action for building and archiving rust projects.
   images: []
@@ -32,6 +43,7 @@
   tags:
     - java
     - android
+
 - name: spot
   description: 'I added some bug fixes and feature improvements to spot: a free software
     implementation of spotify.'
@@ -52,6 +64,7 @@
     github: https://github.com/Douile/rust-tcp-broadcast
   tags:
     - rust
+
 - name: xcolorpick
   description: A small C program that uses the X11 protocol to identify the color
     of the screen where the user clicks.
