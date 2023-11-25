@@ -3,21 +3,26 @@
 // Build site
 
 // Node requirements
-const crypto = require("node:crypto");
-const fs = require("node:fs");
-const path = require("node:path");
-const { execSync } = require("node:child_process");
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { execSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 // External requirements
-const html_minify = require("html-minifier").minify;
-const css_minify = new (require("clean-css"))({ level: 2 });
-const js_minify = require("uglify-js").minify;
-const svg_minify = require("svgo").optimize;
-const json_minify = require("jsonminify");
+import { minify as html_minify } from "html-minifier";
+import clean_css from "clean-css";
+import { minify as js_minify } from "uglify-js";
+import { optimize as svg_minify } from "svgo";
+import json_minify from "jsonminify";
 
-const html_parser = require("node-html-parser").parse;
+import { parse as html_parser } from "node-html-parser";
+
+const css_minify = new clean_css({ level: 2 });
 
 // Constants
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Directory of source files
