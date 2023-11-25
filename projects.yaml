@@ -1,7 +1,8 @@
 - name: gamedig
-  description: I help maintain rust-gamedig, and contribute to node-gamedig; a dependency
-    of my gamestatus discord bot. I have added new protocols, improved the CI, and
-    fixed bugs.
+  description:
+    I help maintain rust-gamedig, and contribute to node-gamedig; a dependency
+    of my gamestatus discord bot. I have added new protocols, improved the CI,
+    and fixed bugs.
   tags:
     - rust
     - nodejs
@@ -12,8 +13,9 @@
     github: https://github.com/gamedig
 
 - name: coredns-iface
-  description: A plugin for coredns, an open-source DNS server written in go, that
-    responds with the IP addresses of local network interfaces. e.g. eth0.iface ->
+  description:
+    A plugin for coredns, an open-source DNS server written in go, that responds
+    with the IP addresses of local network interfaces. e.g. eth0.iface ->
     192.168.0.5
   tags:
     - go
@@ -35,8 +37,9 @@
     - docker
 
 - name: NewPipe
-  description: 'I added some bug fixes and feature improvements to NewPipe: an open-source
-    mobile app for streaming online video.'
+  description:
+    "I added some bug fixes and feature improvements to NewPipe: an open-source
+    mobile app for streaming online video."
   images: []
   links:
     github: https://github.com/TeamNewPipe/NewPipe/pulls?q=is%3Apr+author%3ADouile
@@ -45,8 +48,9 @@
     - android
 
 - name: spot
-  description: 'I added some bug fixes and feature improvements to spot: a free software
-    implementation of spotify.'
+  description:
+    "I added some bug fixes and feature improvements to spot: a free software
+    implementation of spotify."
   images: []
   links:
     github: https://github.com/xou816/spot/pulls?q=is%3Apr+author%3ADouile
@@ -55,10 +59,11 @@
     - gtk
 
 - name: rust-tcp-broadcast
-  description: A simple TCP sever written in rust that broadcasts any message sent
-    to it to all connected clients. This project was made to help improve my understanding
-    of mutexs and arcs, and also to allow me to test my rust build github action on
-    a simple project with no dependencies.
+  description:
+    A simple TCP sever written in rust that broadcasts any message sent to it to
+    all connected clients. This project was made to help improve my
+    understanding of mutexs and arcs, and also to allow me to test my rust build
+    github action on a simple project with no dependencies.
   images: []
   links:
     github: https://github.com/Douile/rust-tcp-broadcast
@@ -66,8 +71,9 @@
     - rust
 
 - name: xcolorpick
-  description: A small C program that uses the X11 protocol to identify the color
-    of the screen where the user clicks.
+  description:
+    A small C program that uses the X11 protocol to identify the color of the
+    screen where the user clicks.
   images: []
   links:
     github: https://github.com/Douile/xcolorpick
@@ -75,7 +81,8 @@
     - c
 
 - name: cyber
-  description: A small jekyll site dedicated to cybersecurity related posts and guides
+  description:
+    A small jekyll site dedicated to cybersecurity related posts and guides
   images: []
   links:
     site: https://cyber.douile.com
@@ -98,10 +105,11 @@
     - ci
 
 - name: discord-suggestion
-  description: A discord bot written utilizing discord.js to allow users to create
-    suggestions in a set channel. Every suggestion can be voted on by any user and
-    accepted/rejected by any manager. Once accepted/rejected the suggestion is updated
-    accordingly and a snapshot of the votes at the time is included.
+  description:
+    A discord bot written utilizing discord.js to allow users to create
+    suggestions in a set channel. Every suggestion can be voted on by any user
+    and accepted/rejected by any manager. Once accepted/rejected the suggestion
+    is updated accordingly and a snapshot of the votes at the time is included.
   images:
     - /assets/discord-suggestion-help.png
     - /assets/discord-suggestion-create.png
@@ -115,14 +123,16 @@
     - discord
 
 - name: discord-gamestatus
-  description: discord-gamestatus is a discord bot written with nodejs and a library
-    known as discord.js. It allows users to create a status message via discord that
-    updates every 60 seconds with data fetched using node-gamedig, this information
-    includes offline, current map, server name, player count and player list. It also
-    provides a few other commands allowing users to recieve direct notifications when
-    a player of a specified name connects/disconnects or when the server goes offline/online,
-    or change the style of their status embed with formattable title and description.
-    Data is stored in a JSON file that utilizes atomic locks to prevent data misshaps.
+  description:
+    discord-gamestatus is a discord bot written with nodejs and a library known
+    as discord.js. It allows users to create a status message via discord that
+    updates every 60 seconds with data fetched using node-gamedig, this
+    information includes offline, current map, server name, player count and
+    player list. It also provides a few other commands allowing users to recieve
+    direct notifications when a player of a specified name connects/disconnects
+    or when the server goes offline/online, or change the style of their status
+    embed with formattable title and description. Data is stored in a JSON file
+    that utilizes atomic locks to prevent data misshaps.
   images:
     - /assets/discord-gamestatus-status.png
     - /assets/discord-gamestatus-statusmod.png
@@ -135,7 +145,8 @@
     - discord
 
 - name: discord-enumerator
-  description: A simple rust program that contacts the discord REST API and outputs
+  description:
+    A simple rust program that contacts the discord REST API and outputs
     information about a given guild in a nicely formatted way.
   images: []
   links:
@@ -144,7 +155,7 @@
     - rust
     - discord
 
-- name: '@douile/bot-utilities'
+- name: "@douile/bot-utilities"
   description: A library of utilities for creating discord bots in node.js.
   images: []
   links:
@@ -155,12 +166,13 @@
     - javascript
 
 - name: economy-bot
-  description: This bot rewards users with a random amount of XP each time they send
-    a message, when they level up they receive a set amount of money. Using this money
-    they are able to purchase items which allow them to participate in "minigames"
-    and other items. This project uses JIMP to generate images on the fly in order
-    to display a users level, and also allows users to add their own languages via
-    a JSON file.
+  description:
+    This bot rewards users with a random amount of XP each time they send a
+    message, when they level up they receive a set amount of money. Using this
+    money they are able to purchase items which allow them to participate in
+    "minigames" and other items. This project uses JIMP to generate images on
+    the fly in order to display a users level, and also allows users to add
+    their own languages via a JSON file.
   images:
     - /assets/discord-economy-level.png
     - /assets/discord-economy-shop.png
@@ -175,10 +187,11 @@
     - image-manipulation
 
 - name: image-saver
-  description: A firefox web extension the allows users to more easily save images
-    in pages, it does this by adding a context menu that automatically detects svgs
-    and background-images. It also uses a DOMParser to standardise/resolve SVG elements
-    (download use elements).
+  description:
+    A firefox web extension the allows users to more easily save images in
+    pages, it does this by adding a context menu that automatically detects svgs
+    and background-images. It also uses a DOMParser to standardise/resolve SVG
+    elements (download use elements).
   images: []
   links:
     github: https://github.com/Douile/image-saver
@@ -188,8 +201,9 @@
     - web-extension
 
 - name: discord-antispambot
-  description: discord-antispam allows moderators to automatically ban influxes of
-    users with new accounts of similar names.
+  description:
+    discord-antispam allows moderators to automatically ban influxes of users
+    with new accounts of similar names.
   images: []
   links:
     github: https://github.com/douile/discord-anitspambot
@@ -199,8 +213,9 @@
     - discord
 
 - name: cog-baneventsync
-  description: cog-baneventsync is a redbot cog written using python and an abstraction
-    of discord.py specifically built for commands. The bot syncs user bans between
+  description:
+    cog-baneventsync is a redbot cog written using python and an abstraction of
+    discord.py specifically built for commands. The bot syncs user bans between
     all servers registered.
   images: []
   links:
@@ -210,9 +225,10 @@
     - discord
 
 - name: wordament-solver
-  description: This C CLI application allows the user to find a list of all possible
-    words sorted by points for any given wordament puzzle. I have also converted it
-    to a website using WASM to compile the C code for usage in browsers.
+  description:
+    This C CLI application allows the user to find a list of all possible words
+    sorted by points for any given wordament puzzle. I have also converted it to
+    a website using WASM to compile the C code for usage in browsers.
   images:
     - /assets/wordament-solver.png
   links:
@@ -225,8 +241,9 @@
     - wasm
 
 - name: chrome-audio-visualizer
-  description: A chrome web extension that uses the audio capture API to generate
-    bar and line visualizations of the audio currently playing.
+  description:
+    A chrome web extension that uses the audio capture API to generate bar and
+    line visualizations of the audio currently playing.
   images:
     - /assets/chrome-audio-visualizer.jpg
   links:
@@ -237,8 +254,10 @@
     - web-extension
 
 - name: dance-dance-engineers
-  description: A script that runs in Space Engineers in game programming blocks. It
-    emulates the game of dance dance revolution using player sensors and monitors.
+  description:
+    A script that runs in Space Engineers in game programming blocks. It
+    emulates the game of dance dance revolution using player sensors and
+    monitors.
   images: []
   links:
     github: https://github.com/Douile/dance-dance-engineers
@@ -246,7 +265,8 @@
     - cs
 
 - name: tower-of-hanoi
-  description: A HTML5 canvas based version of the tower of hanoi game, it uses iterators
+  description:
+    A HTML5 canvas based version of the tower of hanoi game, it uses iterators
     as a low cost way to automatically solve any given number of rings.
   images:
     - /assets/tower-of-hanoi.png
@@ -258,9 +278,11 @@
     - html5
 
 - name: pydns
-  description: pydns is a DNS "server" written in python3 with the builtin socket
-    module. Following the DNS RFCs it serializes/deserializes UDP DNS packets into
-    python objects. Users are able to define hosts in a proprietary text file format.
+  description:
+    pydns is a DNS "server" written in python3 with the builtin socket module.
+    Following the DNS RFCs it serializes/deserializes UDP DNS packets into
+    python objects. Users are able to define hosts in a proprietary text file
+    format.
   images: []
   links:
     github: https://github.com/douile/pydns
@@ -269,10 +291,11 @@
     - dns
 
 - name: logitech-toggle-keys
-  description: A lua script that allows users to bind a key to toggle another key
-    on logitech keyboards and mice using logitech gaming software's lua API. It also
-    has an accompanying web site that allows users to modify the script without making
-    any changes to the code themselves.
+  description:
+    A lua script that allows users to bind a key to toggle another key on
+    logitech keyboards and mice using logitech gaming software's lua API. It
+    also has an accompanying web site that allows users to modify the script
+    without making any changes to the code themselves.
   images: []
   links:
     github: https://github.com/Douile/logitech-toggle-keys
@@ -283,15 +306,17 @@
     - html5
 
 - name: royale-bot
-  description: A discord bot written in python, it connected to various REST APIs
-    and allowed users to check their stats for Fortnite, it also collected various
-    other information todo with the game such as the current shop, server status and
-    news. It used PIL (Python Imaging Library) to create images and graphs to show
-    the player's stats and display shop items. At it's peak this bot had ~2000 servers
-    using it this caused issues as it was a single threaded bot running on poor hardware,
-    as a result I was prompted to research multithreading and asyncronous program
-    in order to increase performance of the bot, this bot is the first discord bot
-    I ever made and is what insipired me to make more.
+  description:
+    A discord bot written in python, it connected to various REST APIs and
+    allowed users to check their stats for Fortnite, it also collected various
+    other information todo with the game such as the current shop, server status
+    and news. It used PIL (Python Imaging Library) to create images and graphs
+    to show the player's stats and display shop items. At it's peak this bot had
+    ~2000 servers using it this caused issues as it was a single threaded bot
+    running on poor hardware, as a result I was prompted to research
+    multithreading and asyncronous program in order to increase performance of
+    the bot, this bot is the first discord bot I ever made and is what insipired
+    me to make more.
   images:
     - /assets/royale-bot-shop.png
     - /assets/royale-bot-stats.png

@@ -4,9 +4,9 @@
   "scripts": {
     "test": "node bin/run-tests.js",
     "test:lint": "npx eslint src bin",
-    "test:format": "npx prettier --check ./bin ./src",
+    "test:format": "npx prettier --check ./bin ./src ./projects.yaml",
     "build": "node bin/build.mjs",
-    "format": "npx prettier --write ./bin ./src"
+    "format": "npx prettier --write ./bin ./src ./projects.yaml"
   },
   "repository": {
     "type": "git",
