@@ -14,7 +14,6 @@ import { minify as html_minify } from "html-minifier";
 import clean_css from "clean-css";
 import { minify as js_minify } from "uglify-js";
 import { optimize as svg_minify } from "svgo";
-import json_minify from "jsonminify";
 
 import { parse as html_parser } from "node-html-parser";
 
