@@ -4,14 +4,11 @@
   document.documentElement.dataset.js = true;
 
   function defineConsts(object, values) {
-    for (let key in values) {
-      const value = values[key];
+    for (const [key, value] of Object.entries(values)) {
       Object.defineProperty(object, key, {
         configurable: false,
         enumerable: false,
-        get: function () {
-          return value;
-        },
+        get: () => value,
       });
     }
   }
@@ -29,14 +26,10 @@
     };
     Object.defineProperties(state, {
       width: {
-        get: function () {
-          return el.width;
-        },
+        get: () => el.width,
       },
       height: {
-        get: function () {
-          return el.height;
-        },
+        get: () => el.height,
       },
     });
 
@@ -49,8 +42,8 @@
       const height = this.height;
       const ctx = this.ctx;
       const canvas = this.canvas;
-      //if (getComputedStyle(canvas).display === 'none') return;
-      let now = Date.now();
+      // if (getComputedStyle(canvas).display === 'none') return;
+      const now = Date.now();
 
       ctx.clearRect(0, 0, width, height);
 
@@ -92,21 +85,22 @@
     const el = document.createElement(tagName);
     if (innerText !== undefined) el.innerText = innerText;
     if (attributes) {
-      for (let key in attributes) {
-        el.setAttribute(key, attributes[key]);
+      for (const [key, value] of Object.entries(attributes)) {
+        el.setAttribute(key, value);
       }
     }
     return el;
   }
 
   defineConsts(window, {
-    displayPage: function (path, url) {
-      if (!window.PAGES.hasOwnProperty(path))
+    displayPage: (path, url) => {
+      if (!Object.hasOwn(window.PAGES, path)) {
         throw new Error("Unknown page " + path);
+      }
       console.log("%cLoading " + path, "text-decoration:underline");
       window.history.replaceState(null, "", path);
       document.body.setAttribute("data-page", path);
-      const keys = Object.keys(PAGES);
+      const keys = Object.keys(window.PAGES);
       const current = keys.indexOf(path);
       for (let i = 0; i < keys.length; i++) {
         const action = i <= current ? "remove" : "add";
@@ -121,7 +115,7 @@
       const pageName = splitPath[splitPath.length - 1].trim();
       document.title = `Douile${pageName.length > 0 ? ` | ${pageName}` : ""}`;
     },
-    displayImages: function (images) {
+    displayImages: (images) => {
       console.log(images);
       const gallery = document.querySelector(".gallery");
       gallery.setAttribute("data-selected", 0);
@@ -154,19 +148,21 @@
       }
       window.selectImage(0);
     },
-    closeImages: function () {
+    closeImages: () => {
       const gallery = document.querySelector(".gallery");
       gallery.removeAttribute("data-selected");
       gallery.removeAttribute("data-single");
-      for (let child of gallery.querySelectorAll(".gallery-image-container")) {
+      for (const child of gallery.querySelectorAll(
+        ".gallery-image-container",
+      )) {
         child.remove();
       }
     },
-    selectImage: function (inc) {
+    selectImage: (inc) => {
       const gallery = document.querySelector(".gallery");
       if (!gallery.hasAttribute("data-selected")) return;
-      let last = parseInt(gallery.getAttribute("data-selected"));
-      if (isNaN(last)) last = 0;
+      let last = parseInt(gallery.getAttribute("data-selected"), 10);
+      if (Number.isNaN(last)) last = 0;
       let selected = last + inc;
 
       const children = Array.from(
@@ -200,7 +196,7 @@
         children[selected].setAttribute("data-active", "true");
       }
     },
-    toggleLightMode: function () {
+    toggleLightMode: () => {
       const isLight =
         document.documentElement.getAttribute("data-style") === "light";
       document.documentElement.setAttribute(
@@ -211,7 +207,7 @@
       canvas.dataColor =
         getComputedStyle(canvas).getPropertyValue("--foreground");
     },
-    projectFilterAdd: function (filter) {
+    projectFilterAdd: (filter) => {
       const page = document.querySelector(".projects");
       let filters = [];
       if (page.hasAttribute("data-filter")) {
@@ -220,7 +216,7 @@
       filters.push(filter);
       projectFilterUpdate(filters);
     },
-    projectFilterRemove: function (filter) {
+    projectFilterRemove: (filter) => {
       const page = document.querySelector(".projects");
       let filters = [];
       if (page.hasAttribute("data-filter")) {
@@ -230,7 +226,7 @@
 
       projectFilterUpdate(filters);
     },
-    projectFilterToggle: function (filter) {
+    projectFilterToggle: (filter) => {
       const page = document.querySelector(".projects");
       let filters = [];
       if (page.hasAttribute("data-filter")) {
@@ -244,16 +240,16 @@
 
       projectFilterUpdate(filters);
     },
-    projectFilterUpdate: function (filters) {
+    projectFilterUpdate: (filters) => {
       const page = document.querySelector(".projects");
       if (filters.length > 0) {
         document.documentElement.dataset.animateProjects = true;
         page.setAttribute("data-filter", filters.join(" "));
         // clear old filter
-        for (let project of document.querySelectorAll(".project")) {
+        for (const project of document.querySelectorAll(".project")) {
           project.classList.remove("project-shown");
         }
-        for (let project of document.querySelectorAll(
+        for (const project of document.querySelectorAll(
           filters.map((f) => `.project__${f}`).join(","),
         )) {
           project.classList.add("project-shown");
@@ -263,7 +259,7 @@
           document.documentElement.dataset.animateProjects = true;
         }
         page.removeAttribute("data-filter");
-        for (let project of document.querySelectorAll(".project")) {
+        for (const project of document.querySelectorAll(".project")) {
           project.classList.add("project-shown");
         }
       }
@@ -280,20 +276,18 @@
       }
       URL.revokeObjectURL(filterStyle.href);
       const blob = new Blob(
-        filters.map((f) => {
-          return `.project-tag__${f}{border:1px solid var(--color)}`;
-        }),
+        filters.map((f) => `.project-tag__${f}{border:1px solid var(--color)}`),
         { type: "text/css" },
       );
       filterStyle.href = URL.createObjectURL(blob);
     },
-    loadActivityPage: async function () {
+    loadActivityPage: async () => {
       console.log("%cLoad Activity Page", "color:#f00");
       const page = document.querySelector(".page-activity");
       if (page.hasAttribute("data-api-loading")) return;
       page.setAttribute("data-api-loading", "true");
 
-      const currentPage = parseInt(page.getAttribute("data-api-page")) || 1;
+      const currentPage = parseInt(page.getAttribute("data-api-page"), 10) || 1;
       const res = await fetch(
         `https://api.github.com/users/Douile/events?page=${encodeURIComponent(
           currentPage,
@@ -372,7 +366,7 @@
     PAGES: {
       "/": null,
       "/projects/": (url) => {
-        let filters = [];
+        const filters = [];
         if (url !== undefined && url.hash.length > 1) {
           filters.push(url.hash.substring(1));
         }
@@ -390,7 +384,7 @@
 
   window.addEventListener(
     "click",
-    function (e) {
+    (e) => {
       if (e.target.tagName === "A") {
         const dest = new URL(e.target.href, window.location);
         if (
@@ -417,9 +411,11 @@
           return;
         }
         if (e.target.classList.contains("light-mode-button")) {
-          return window.toggleLightMode();
+          window.toggleLightMode();
+          return;
         } else if (e.target.classList.contains("project-tag")) {
-          return window.projectFilterToggle(e.target.getAttribute("data-tag"));
+          window.projectFilterToggle(e.target.getAttribute("data-tag"));
+          return;
         }
       } else if (e.target.classList.contains("gallery")) {
         if (e.target.hasAttribute("data-selected")) {
@@ -432,22 +428,22 @@
 
   window.addEventListener(
     "load",
-    function () {
+    () => {
       window.displayPage(window.location.pathname, window.location);
       initBackground(document.querySelector("canvas#dynamic-background"));
     },
     { once: true },
   );
 
-  window.addEventListener("resize", function () {
+  window.addEventListener("resize", () => {
     const el = document.querySelector("canvas#dynamic-background");
     el.width = window.innerWidth;
     el.height = window.innerHeight;
   });
 
-  let dragEvent = undefined;
+  let dragEvent;
 
-  window.addEventListener("touchstart", function (e) {
+  window.addEventListener("touchstart", (e) => {
     const keys = Object.keys(window.PAGES);
     const page = document.body.getAttribute("data-page");
     const i = keys.indexOf(page);
@@ -474,9 +470,9 @@
     }
   });
 
-  window.addEventListener("touchmove", function (e) {
+  window.addEventListener("touchmove", (e) => {
     if (dragEvent === undefined) return;
-    for (let touch of e.changedTouches) {
+    for (const touch of e.changedTouches) {
       if (dragEvent.identifier === touch.identifier) {
         const d = touch.clientX - dragEvent.x;
 
@@ -504,8 +500,8 @@
     }
   });
 
-  window.addEventListener("touchend", function (e) {
-    for (let touch of e.changedTouches) {
+  window.addEventListener("touchend", (e) => {
+    for (const touch of e.changedTouches) {
       if (dragEvent.identifier === touch.identifier) {
         const d = touch.clientX - dragEvent.x;
         dragEvent.page.style.transform = "";
@@ -529,8 +525,8 @@
     }
   });
 
-  window.addEventListener("touchcancel", function (e) {
-    for (let touch of e.touches) {
+  window.addEventListener("touchcancel", (e) => {
+    for (const touch of e.touches) {
       if (dragEvent.identifier === touch.identifier) {
         dragEvent.page.style.transform = "";
         if (dragEvent.left) {
@@ -561,7 +557,7 @@
     if (url === null) return;
     const method = form.getAttribute("method") || "GET";
     const opts = {
-      method: method,
+      method,
       mode: "cors",
       credentials: "omit",
       cache: "no-cache",
@@ -569,7 +565,7 @@
     };
 
     if (method === "GET") {
-      url = new URL(url, location.href);
+      url = new URL(url, window.location.href);
       for (let i = 0; i < form.elements.length; i++) {
         const el = form.elements[i];
         if (el.name.length > 0) {
@@ -605,21 +601,24 @@
       return;
     }
 
-    if (res.ok) return (output.innerText = "Succesfully sent message.");
+    if (res.ok) {
+      output.innerText = "Succesfully sent message.";
+      return;
+    }
     const error = await jsonOrEmpty(res);
     output.innerText = `API error${
       "message" in error ? `, ${error.message},` : ""
     } please try again later...`;
   }
 
-  window.addEventListener("submit", function (e) {
+  window.addEventListener("submit", (e) => {
     e.preventDefault();
     sendFormRequest(e.target).then(null, console.error);
   });
 
   let keyLog = [];
   const keyCheck = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-  window.addEventListener("keydown", function (e) {
+  window.addEventListener("keydown", (e) => {
     if (!e.isTrusted) return;
     keyLog.push(e.keyCode);
     if (keyLog.length > keyCheck.length)
@@ -633,7 +632,7 @@
 
   document.querySelector(".page-activity").addEventListener(
     "scroll",
-    function (e) {
+    (e) => {
       if (e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight) {
         loadActivityPage().then(null, console.error);
       }

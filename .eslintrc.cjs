@@ -44,5 +44,11 @@ module.exports = {
     'no-plusplus': 0,
     'prefer-spread': 0,
     'no-bitwise': 0,
+    "strict": 0,
+    "no-continue": 0,
+    "no-underscore-dangle": 0,
+    "no-useless-return": 1,
+    "no-else-return": 1,
+    "no-undef": 1
   },
 };
