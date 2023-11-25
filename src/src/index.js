@@ -97,95 +97,6 @@
     return el;
   }
 
-  function hsl(h) {
-    return `hsl(${h},100%,60%)`;
-  }
-
-  async function loadProjects() {
-    const res = await fetch("/content/projects.json", {
-      mode: "same-origin",
-      credentials: "omit",
-    });
-    const projects = await res.json();
-    const rootEl = document.querySelector(".projects");
-    rootEl.firstChild.remove();
-    const categories = {};
-    for (let project of projects) {
-      const container = createElement("article", {
-        class: "project project-shown",
-      });
-      container.appendChild(
-        createElement("h1", { class: "project-title" }, project.name)
-      );
-      const tags = container.appendChild(
-        createElement("div", { class: "project-tags" })
-      );
-      for (let tag of project.tags) {
-        container.classList.add(`project__${tag}`);
-        tags.appendChild(
-          createElement(
-            "button",
-            { class: `project-tag project-tag__${tag}`, "data-tag": tag },
-            tag
-          )
-        );
-        if (!(tag in categories)) categories[tag] = "";
-      }
-      container.appendChild(
-        createElement(
-          "p",
-          { class: "project-description" },
-          project.description
-        )
-      );
-      const links = createElement("div", { class: "project-links" });
-      if (project.images.length > 0) {
-        project.links.images = "#images";
-      }
-      for (let type in project.links) {
-        const link = createElement("a", {
-          class: "project-link",
-          href: project.links[type],
-          target: "_blank",
-          "aria-label": type,
-          rel: "noopener",
-        });
-        link.project = project;
-        link.appendChild(
-          createElement("div", { class: "link-icon", "data-link": type })
-        );
-        links.appendChild(link);
-      }
-      container.appendChild(links);
-      rootEl.appendChild(container);
-    }
-
-    // Generate colours for tags
-    const keys = Object.keys(categories);
-    const n = Math.floor(360 / keys.length);
-    for (let i = 0; i < keys.length; i++) {
-      categories[keys[i]] = hsl(n * i);
-    }
-
-    // Add colour stylesheet
-    let categoryStyles = document.querySelector("link[data-role=categories]");
-    if (categoryStyles === null) {
-      categoryStyles = createElement("link", {
-        rel: "stylesheet",
-        "data-role": "categories",
-      });
-      document.head.appendChild(categoryStyles);
-    }
-    URL.revokeObjectURL(categoryStyles.href);
-    const blob = new Blob(
-      Object.entries(categories).map((i) => {
-        return `.project-tag__${i[0]}{--color:${i[1]}}`;
-      }),
-      { type: "text/css" }
-    );
-    categoryStyles.href = URL.createObjectURL(blob);
-  }
-
   defineConsts(window, {
     displayPage: function (path, url) {
       if (!window.PAGES.hasOwnProperty(path))
@@ -841,6 +752,4 @@
     },
     { passive: true }
   );
-
-  loadProjects().then(null, console.error);
 })();
