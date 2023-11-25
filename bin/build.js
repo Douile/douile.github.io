@@ -17,7 +17,16 @@ const json_minify = require("jsonminify");
 
 const html_parser = require("node-html-parser").parse;
 
+// Constants
+
+/**
+ * Directory of source files
+ */
 const SRC_DIR = path.join(__dirname, "../src");
+
+/**
+ * Directory for output
+ */
 const BUILD_DIR = path.join(__dirname, "../build");
 
 const DOMAIN = "https://douile.com";
@@ -25,11 +34,32 @@ const APP_PAGES = ["/", "/projects/", "/activity/", "/contact/"];
 const MEDIA_URL =
   "https://media.githubusercontent.com/media/Douile/douile.github.io/gh-pages";
 
+/** Website version */
+const version = execSync('git log -n 1 --format="%h"').toString().trim();
+
+// Variables
+
+/**
+ * HTML files that need to be minified
+ * @type {string[]}
+ */
 const htmlFiles = [];
+
+/**
+ * Hashes of assets to use for HTML integrity
+ * @type {Map<string, string>}
+ */
 const fileIntegrity = new Map();
 
+/**
+ * Pages to add to the sitemap
+ * @type {{loc: string, priority: number}[]}
+ */
+const sitemap = [];
+
+// STAGE 0: Checks
 if (!fs.existsSync(SRC_DIR)) {
-  console.error(`"${SRC_DIR}" does not exist`);
+  console.error(`Source directory "${SRC_DIR}" does not exist`);
   process.exit(1);
 }
 
@@ -37,16 +67,22 @@ if (fs.existsSync(BUILD_DIR)) {
   if (fs.statSync(BUILD_DIR).isDirectory()) {
     fs.rmSync(BUILD_DIR, { recursive: true });
   } else {
-    console.error(`"${BUILD_DIR}" is not a directory`);
+    console.error(`Build directory "${BUILD_DIR}" is not a directory`);
     process.exit(1);
   }
 }
 
+// STAGE 1: Copy / minify files
 console.log("Copying/minifying files...");
 
 fs.mkdirSync(BUILD_DIR);
 
 // Copy files
+/**
+ * Copy all the files in a directory (and process them)
+ * @param {string} source Source directory
+ * @param {string} dest Destination directory
+ */
 function copyDir(source, dest) {
   for (let ent of fs.readdirSync(source, { withFileTypes: true })) {
     if (ent.isFile()) {
@@ -59,6 +95,12 @@ function copyDir(source, dest) {
   }
 }
 
+/**
+ *
+ * @param {string} src Source directory
+ * @param {string} dest Destination directory
+ * @param {fs.Dirent} ent File entity to copy
+ */
 function copyFile(src, dest, ent) {
   let fileType = ent.name.match(/.+\.([^\.]+)$/);
   fileType = fileType.length > 1 ? fileType[1] : null;
@@ -132,10 +174,20 @@ function copyFile(src, dest, ent) {
   }
 }
 
+/**
+ * Normalize a path into a relative path usable in HTML
+ * @param {string} base The root directory of the website
+ * @param {string} file The path to the file
+ * @returns {string} A normalized relative path
+ */
 function relativePath(base, file) {
   return "/" + path.normalize(path.relative(base, file));
 }
 
+/**
+ * Read a file and store its integrity in {@link fileIntegrity}
+ * @param {string} file The path to the file
+ */
 function saveIntegrity(file) {
   const hash = crypto.createHash("sha512");
   hash.update(fs.readFileSync(file));
@@ -147,11 +199,9 @@ function saveIntegrity(file) {
 
 copyDir(SRC_DIR, BUILD_DIR);
 
-const version = execSync('git log -n 1 --format="%h"').toString().trim();
-
+// STAGE 2: Update HTML integrities
 console.log(`Adding script integrities (${version})`);
 
-const sitemap = [];
 for (let file of htmlFiles) {
   console.log(file);
   const html = html_parser(fs.readFileSync(file, { encoding: "utf8" }));
@@ -194,6 +244,7 @@ for (let file of htmlFiles) {
   }
 }
 
+// STAGE 3: Generate sitemap
 const now = new Date().toISOString();
 fs.writeFileSync(
   path.join(BUILD_DIR, "sitemap.xml"),
