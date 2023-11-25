@@ -19,6 +19,12 @@ import { parse as html_parser } from "node-html-parser";
 
 const css_minify = new clean_css({ level: 2 });
 
+// Internal requirements
+import {
+  calculateAndSaveIntegrity,
+  fileIntegrities,
+} from "./builder/utils.mjs";
+
 // Constants
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -48,12 +54,6 @@ const version = execSync('git log -n 1 --format="%h"').toString().trim();
  * @type {string[]}
  */
 const htmlFiles = [];
-
-/**
- * Hashes of assets to use for HTML integrity
- * @type {Map<string, string>}
- */
-const fileIntegrity = new Map();
 
 /**
  * Pages to add to the sitemap
@@ -132,7 +132,7 @@ function copyFile(src, dest, ent) {
         dest,
         css_minify.minify(fs.readFileSync(src, { encoding: "utf8" })).styles
       );
-      saveIntegrity(dest);
+      calculateAndSaveIntegrity(BUILD_DIR, dest);
       break;
     }
     case "js": {
@@ -143,7 +143,7 @@ function copyFile(src, dest, ent) {
           webkit: true,
         }).code
       );
-      saveIntegrity(dest);
+      calculateAndSaveIntegrity(BUILD_DIR, dest);
       break;
     }
     case "svg": {
@@ -178,51 +178,32 @@ function copyFile(src, dest, ent) {
   }
 }
 
-/**
- * Normalize a path into a relative path usable in HTML
- * @param {string} base The root directory of the website
- * @param {string} file The path to the file
- * @returns {string} A normalized relative path
- */
-function relativePath(base, file) {
-  return "/" + path.normalize(path.relative(base, file));
-}
-
-/**
- * Read a file and store its integrity in {@link fileIntegrity}
- * @param {string} file The path to the file
- */
-function saveIntegrity(file) {
-  const hash = crypto.createHash("sha512");
-  hash.update(fs.readFileSync(file));
-  fileIntegrity.set(
-    relativePath(BUILD_DIR, file),
-    "sha512-" + hash.digest("base64")
-  );
-}
-
 copyDir(SRC_DIR, BUILD_DIR);
 
-// STAGE 2: Update HTML integrities
-console.log(`Adding script integrities (${version})`);
+// STAGE 2: HTML internal changes
+console.log(`Rendering HTML (${version})`);
 
 for (let file of htmlFiles) {
   console.log(file);
   const html = html_parser(fs.readFileSync(file, { encoding: "utf8" }));
+
+  // Add resource integrities
   for (let script of html.querySelectorAll("script")) {
     const src = script.getAttribute("src");
-    if (fileIntegrity.has(src)) {
-      script.setAttribute("integrity", fileIntegrity.get(src));
+    if (fileIntegrities.has(src)) {
+      script.setAttribute("integrity", fileIntegrities.get(src));
       script.setAttribute("src", src + `?v=${version}`);
     }
   }
   for (let style of html.querySelectorAll("link[rel=stylesheet]")) {
     const href = style.getAttribute("href");
-    if (fileIntegrity.has(href)) {
-      style.setAttribute("integrity", fileIntegrity.get(href));
+    if (fileIntegrities.has(href)) {
+      style.setAttribute("integrity", fileIntegrities.get(href));
       style.setAttribute("href", href + `?v=${version}`);
     }
   }
+
+  // Generate "app" pages
   if (path.basename(file) === "index.html") {
     const dir = path.dirname(file);
     const body = html.querySelector("body");
